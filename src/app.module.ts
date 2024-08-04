@@ -25,7 +25,7 @@ const prodConfig = { port: 400 };
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'password',
+      password: 'postgres',
       database: 'spotify-clone',
       entities: [Song, User, Playlist],
       synchronize: true,
