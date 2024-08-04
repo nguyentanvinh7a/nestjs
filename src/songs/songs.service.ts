@@ -1,8 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song-dto';
 import { Connection } from 'src/common/constants/connection';
 
-@Injectable()
+@Injectable({
+    scope: Scope.TRANSIENT
+})
 export class SongsService {
     private readonly songs: string[] = ['Despacito', 'Shape of You'];
 
