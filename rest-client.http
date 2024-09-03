@@ -6,6 +6,9 @@ GET http://localhost:3000/songs
 ### FIND SONGS REQUEST
 GET http://localhost:3000/songs/test
 
+### FIND SONG BY ID REQUEST
+GET http://localhost:3000/songs/1
+
 ### CREATE SONG REQUEST
 POST http://localhost:3000/songs
 Content-Type: application/json
@@ -14,20 +17,30 @@ Content-Type: application/json
     "title": "New Song",
     "artists": ["New Artist"],
     "releaseDate": "2021-01-01",
-    "duration": "01:00"
+    "duration": "01:00",
+    "lyrics": "New Lyrics"
 }
 
 
 ### UPDATE SONG REQUEST
-PUT http://localhost:3000/songs/1
+PUT http://localhost:3000/songs/2
 Content-Type: application/json
 
 {
   "title": "Updated Song",
-  "artist": "Updated Artist",
-  "genre": "Updated Genre"
+  "artists": ["Updated Artist"],
+  "duration": "03:00"
 }
 
 ### DELETE SONG REQUEST
 DELETE http://localhost:3000/songs/1
 
+### CREATE PLAYLIST REQUEST
+POST http://localhost:3000/playlists
+Content-Type: application/json
+
+{
+    "name": "New Playlist",
+    "songs": [],
+    "user": 1
+}

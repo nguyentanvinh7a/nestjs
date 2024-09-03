@@ -13,29 +13,35 @@ import {
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song-dto';
+import { Song } from './song.entity';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { UpdateSongDto } from './dto/update-song-dto';
 
-@Controller({path: 'songs', scope: Scope.TRANSIENT})
+@Controller({ path: 'songs' })
 export class SongsController {
-  constructor(private readonly songsService: SongsService) {}
-
-  @Post()
-  create(@Body() createSongDto: CreateSongDto) {
-    return this.songsService.create(createSongDto);
+  constructor(private readonly songsService: SongsService) {
+    console.log("this.songsService", this.songsService);
   }
 
-  @Get()
-  findAll(): string[] {
+  @Post()
+  create(@Body() createSongDto: CreateSongDto): Promise<Song> {
     try {
-      return this.songsService.findAll();
+      return this.songsService.create(createSongDto);
     } catch (error) {
+      console.log(error);
       throw new HttpException(
-        'Could not get songs',
+        'Could not create song',
         HttpStatus.INTERNAL_SERVER_ERROR,
         {
           cause: error.message,
         },
       );
     }
+  }
+
+  @Get()
+  findAll(): Promise<Song[]> {
+    return this.songsService.findAll();
   }
 
   @Get(':id')
@@ -45,17 +51,17 @@ export class SongsController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ): string {
-    return `This action returns a #${id} song`;
+  ): Promise<Song> {
+    return this.songsService.findOne(id);
   }
 
   @Put(':id')
-  update(): string {
-    return 'This action updates a song';
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateSongDto: UpdateSongDto): Promise<UpdateResult> {
+    return this.songsService.update(id, updateSongDto);
   }
 
   @Delete(':id')
-  remove(): string {
-    return 'This action removes a song';
+  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
+    return this.songsService.remove(id);
   }
 }

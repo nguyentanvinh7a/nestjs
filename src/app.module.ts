@@ -14,6 +14,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Song } from './songs/song.entity';
 import { User } from './users/user.entity';
 import { Playlist } from './playlists/playlist.entity';
+import { PlaylistModule } from './playlists/playlist.module';
+import { DataSource } from 'typeorm';
 
 const devConfig = { port: 3000 };
 const prodConfig = { port: 400 };
@@ -31,6 +33,7 @@ const prodConfig = { port: 400 };
       synchronize: true,
     }),
     SongsModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
   providers: [
@@ -46,6 +49,10 @@ const prodConfig = { port: 400 };
   ],
 })
 export class AppModule implements NestModule {
+  constructor(private dataSource: DataSource) {
+    console.log('dbName: ', dataSource.driver.database);
+  }
+
   configure(consumer: MiddlewareConsumer) {
     // option 1: apply middleware to all routes
     // consumer
